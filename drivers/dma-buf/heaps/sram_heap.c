@@ -20,6 +20,7 @@
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/dma-buf.h>
+#include <linux/iosys-map.h>
 #include <linux/dma-heap.h>
 #include <linux/delay.h>
 #include <linux/of.h>
@@ -159,11 +160,16 @@ static int dma_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
 	return ret;
 }
 
-static void *dma_heap_vmap(struct dma_buf *dmabuf)
+static int dma_heap_vmap(struct dma_buf *dmabuf, struct iosys_map *map)
 {
 	struct sram_dma_heap_buffer *buffer = dmabuf->priv;
 
-	return buffer->vaddr;
+	iosys_map_set_vaddr(map, buffer->vaddr);
+	return 0;
+}
+
+static void dma_heap_vunmap(struct dma_buf *dmabuf, struct iosys_map *map)
+{
 }
 
 static const struct dma_buf_ops sram_dma_heap_buf_ops = {
@@ -174,6 +180,7 @@ static const struct dma_buf_ops sram_dma_heap_buf_ops = {
 	.release = dma_heap_dma_buf_release,
 	.mmap = dma_heap_mmap,
 	.vmap = dma_heap_vmap,
+	.vunmap = dma_heap_vunmap,
 };
 
 static struct dma_buf *sram_dma_heap_allocate(struct dma_heap *heap,

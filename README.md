@@ -1,3 +1,8 @@
+这个fork尝试解决rk-6.1-rkr5.1内核DMABUF-HEAP相关问题
+
+代码改动参照：https://github.com/CNflysky/linux-rockchip
+
+
 <h2 align="center">
   <a href=#><img src="https://raw.githubusercontent.com/armbian/.github/master/profile/logosmall.png" alt="Armbian logo"></a>
   <br><br>
